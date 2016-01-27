@@ -1,7 +1,7 @@
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
+import java.util.ArrayList;
 import java.util.*;
 
 public class Main {
@@ -31,15 +31,20 @@ public class Main {
             cowcodes[i] = "";
         }
 
-
+        int x = 0;
         String[] words = new String[lines.length];
+        ArrayList  Add = new ArrayList();
         for (int i = 186; i < lines.length; i++) {
             int cc = 0;
-            if (lines[i].contains(">IE")){// && lines[i].contains("<td><a class=\"modal-link\" data-modal-width=\"895\" href=\"/profile/animal-detail/")) {
+            if (lines[i].contains(">IE")) {// && lines[i].contains("<td><a class=\"modal-link\" data-modal-width=\"895\" href=\"/profile/animal-detail/")) {
                 String proper = lines[i];
                 String find = proper.substring(85);
                 String[] findNum = find.split("/");
-                System.out.println(findNum[0]);
+                //System.out.println(findNum[0]);
+
+                Add.add(findNum[0]);
+               // System.out.println(Add);
+
                 //words = proper.split("/");
                 //cowcodes[cc++]= words[3];
                 /*for (int j = 0; j < words.length; j++) {
@@ -59,6 +64,23 @@ public class Main {
 
             }
         }
+        String newId = (String) Add.get(0);
+        System.out.print(newId);
+        Document profile = Jsoup.connect("https://webapp.icbf.com/profile/animal-detail/" + newId)
+                .cookies(loginCookies)
+                .get();
+        System.out.print("after socket");
+        System.out.print(profile);
+
+        //String login2 = profile.toString();
+        //String[] lines2 = login2.split("\n");
+        //String[] cowcodes2 = new String[lines2.length];
+       // String[] cowcodesonly2 = new String[1000];
+       // for (int i = 0; i < cowcodes2.length; i++) {
+       //     cowcodes2[i] = "";
+
+       //     System.out.print(cowcodes2[i]);
+       // }
 
            /* Arrays.sort(cowcodes);
             for (int j = 0; j < cowcodes.length; j++) {
