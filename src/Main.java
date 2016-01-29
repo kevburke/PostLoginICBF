@@ -20,7 +20,7 @@ public class Main {
 
         Connection.Response res = Jsoup                                 //connect to ICBF
                 .connect("https://webapp.icbf.com/auth/")
-                .data("username", "IE1313426", "password", "Oranmore11")
+                .data("username", "", "password", "")
                 .method(Connection.Method.POST)
                 .execute();
 
