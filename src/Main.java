@@ -6,6 +6,8 @@ import java.util.*;
 
 public class Main {
 
+    private static String[] jumbo;
+
     public static void main(String[] args) throws Exception {
 
         Connection.Response res = Jsoup                                 //connect to ICBF
@@ -62,7 +64,9 @@ public class Main {
             String[] linesin = profile.split("\n");
             String[] proper2 = new String[linesin.length];
             for (int i = 0; i < linesin.length; i++) {
-                int cc = 0;
+                int cc=0,jum=0,num=0, sex=0, dob=0, nam=0, sta=0, bre=0,
+                dam=0, sir=0;
+
                 if (linesin[i].contains("span id=")) {// && lines[i].contains("<td><a class=\"modal-link\" data-modal-width=\"895\" href=\"/profile/animal-detail/")) {
                     proper2[cc] = linesin[i];
                     System.out.println(proper2[cc++]);
@@ -71,7 +75,8 @@ public class Main {
                     //System.out.println(dataName);
                     switch(dataName){
                         case "jum":
-                            String[] dataName = proper2[cc].substring(32,35);
+                            jumbo[jum++] = proper2[cc].substring(32,35);
+                            System.out.println(jumbo[num]);
                         break;
                         case "num":
 
