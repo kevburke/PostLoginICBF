@@ -7,6 +7,14 @@ import java.util.*;
 public class Main {
 
     private static String[] jumbo;
+    private static String[] num;
+    private static String[] sex;
+    private static String[] dob;
+    private static String[] name;
+    private static String[] status;
+    private static String[] breed;
+    private static String[] dam;
+    private static String[] sire;
 
     public static void main(String[] args) throws Exception {
 
@@ -49,6 +57,18 @@ public class Main {
 
             }
         }
+
+
+        jumbo = new String[Add.size()];
+        num = new String[Add.size()];
+        sex = new String[Add.size()];
+        dob = new String[Add.size()];
+        name = new String[Add.size()];
+        status = new String[Add.size()];
+        breed = new String[Add.size()];
+        dam = new String[Add.size()];
+        sire = new String[Add.size()];
+        int jum=0,nu=0, se=0, domm=0, nam=0, sta=0, bre=0, da=0, sir=0;
         for (int xx = 0; xx < Add.size(); xx++) {
 
 
@@ -63,44 +83,70 @@ public class Main {
             String profile = profileConnect.toString();                   //doc to strings
             String[] linesin = profile.split("\n");
             String[] proper2 = new String[linesin.length];
+
             for (int i = 0; i < linesin.length; i++) {
-                int cc=0,jum=0,num=0, sex=0, dob=0, nam=0, sta=0, bre=0,
-                dam=0, sir=0;
+                int cc=0;
 
                 if (linesin[i].contains("span id=")) {// && lines[i].contains("<td><a class=\"modal-link\" data-modal-width=\"895\" href=\"/profile/animal-detail/")) {
+
                     proper2[cc] = linesin[i];
-                    System.out.println(proper2[cc++]);
+                    //System.out.println(proper2[cc]);
 
                     String dataName = proper2[cc].substring(25,28);
                     //System.out.println(dataName);
                     switch(dataName){
                         case "jum":
                             jumbo[jum++] = proper2[cc].substring(32,35);
-                            System.out.println(jumbo[num]);
+                            System.out.println(jumbo[jum-1]);
                         break;
                         case "num":
-
+                            String temp = proper2[cc].substring(30);
+                            String[] words=temp.split("<");
+                            num[nu++]= words[0];
+                            System.out.println(num[nu-1]);
                             break;
                         case "sex":
-
+                            if(proper2[cc].contains("Female"))
+                                sex[se++] ="Female";
+                            else
+                                sex[se++] ="Male";
+                            System.out.println(sex[se-1]);
                             break;
                         case "dob":
-
+                            String temp2 = proper2[cc].substring(30);
+                            String[] words2=temp2.split("<");
+                            dob[domm++]= words2[0];
+                            System.out.println(dob[domm-1]);
                             break;
                         case "nam":
-
+                            String temp3 = proper2[cc].substring(31);
+                            String[] words3=temp3.split("<");
+                            name[nam++]= words3[0];
+                            System.out.println(name[nam-1]);
                             break;
                         case "sta":
-
+                            String temp4 = proper2[cc].substring(33);
+                            String[] words4=temp4.split("<");
+                            status[sta++]= words4[0];
+                            System.out.println(status[sta-1]);
                             break;
                         case "bre":
-
+                            String temp5 = proper2[cc].substring(32);
+                            String[] words5=temp5.split("<");
+                            breed[bre++]= words5[0];
+                            System.out.println(breed[bre-1]);
                             break;
                         case "dam":
-
+                            String temp6 = proper2[cc].substring(30);
+                            String[] words6=temp6.split("<");
+                            dam[da++]= words6[0];
+                            System.out.println(dam[da-1]);
                             break;
                         case "sir":
-
+                            String temp7 = proper2[cc].substring(31);
+                            String[] words7=temp7.split("<");
+                            sire[sir++]= words7[0];
+                            System.out.println(sire[sir-1]);
                             break;
                         default:
                             System.out.println("you fucked up!  :" +dataName);
