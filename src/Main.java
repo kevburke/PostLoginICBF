@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Connection.Response res = Jsoup
+        Connection.Response res = Jsoup                                 //connect to ICBF
                 .connect("https://webapp.icbf.com/auth/")
                 .data("username", "IE1313426", "password", "Oranmore11")
                 .method(Connection.Method.POST)
@@ -17,67 +17,109 @@ public class Main {
 //This will get you cookies
         Map<String, String> loginCookies = res.cookies();
 
-//And this is the easiest way I've found to remain in session
+// To remain in session
         Document mainin = Jsoup.connect("https://webapp.icbf.com/profile/beef-eurostar")
                 .cookies(loginCookies)
                 .get();
 
         //System.out.println(mainin);
-        String login = mainin.toString();
-        String[] lines = login.split("\n");
-        String[] cowcodes = new String[lines.length];
-        String[] cowcodesonly = new String[1000];
-        for (int i = 0; i < cowcodes.length; i++) {
-            cowcodes[i] = "";
-        }
+        String login = mainin.toString();                   //doc to strings
+        String[] lines = login.split("\n");                 //splitting to lines
+        //String[] cowcodes = new String[lines.length];       //
+       // String[] cowcodesonly = new String[1000];
+       // for (int i = 0; i < cowcodes.length; i++) {
+        //    cowcodes[i] = "";
+       // }
 
         int x = 0;
-        String[] words = new String[lines.length];
+       // String[] words = new String[lines.length];
         ArrayList  Add = new ArrayList();
         for (int i = 186; i < lines.length; i++) {
             int cc = 0;
             if (lines[i].contains(">IE")) {// && lines[i].contains("<td><a class=\"modal-link\" data-modal-width=\"895\" href=\"/profile/animal-detail/")) {
                 String proper = lines[i];
-                String find = proper.substring(85);
-                String[] findNum = find.split("/");
-                //System.out.println(findNum[0]);
+                String find = proper.substring(85); //counting characters to get icbf id split
+                String[] findNum = find.split("/"); //cutting off at the /
+               // System.out.println(findNum[0]);     //print id's
 
-                Add.add(findNum[0]);
-               // System.out.println(Add);
-
-                //words = proper.split("/");
-                //cowcodes[cc++]= words[3];
-                /*for (int j = 0; j < words.length; j++) {
-                    if (words[j]!= "" && (words[j].startsWith("1") ||
-                            words[j].startsWith("2") ||
-                            words[j].startsWith("3") ||
-                            words[j].startsWith("4") ||
-                            words[j].startsWith("5") ||
-                            words[j].startsWith("6") ||
-                            words[j].startsWith("7") ||
-                            words[j].startsWith("8") ||
-                            words[j].startsWith("9"))) {
-                        if (!words[j].matches(""))
-                        cowcodes[cc++] = words[j];
-                    }*/
-
+                    Add.add(findNum[0]);                //stick id's into arrayliist
+                   // System.out.println(Add);
 
             }
         }
-        String newId = (String) Add.get(0);
-        System.out.print(newId);
-        Document profile = Jsoup.connect("https://webapp.icbf.com/profile/animal-detail/" + newId)
-                .cookies(loginCookies)
-                .get();
-        System.out.print("after socket");
-        System.out.print(profile);
+        for (int xx = 0; xx < Add.size(); xx++) {
+
+
+            String newId = (String) Add.get(xx);     //take id out and make connection to individual profiles
+            //System.out.print(newId);
+            Document profileConnect = Jsoup.connect("https://webapp.icbf.com/profile/animal-detail/" + newId)
+                    .cookies(loginCookies)
+                    .get();
+            // System.out.print("after socket");
+
+            //  System.out.print(profileConnect);
+            String profile = profileConnect.toString();                   //doc to strings
+            String[] linesin = profile.split("\n");
+            String[] proper2 = new String[linesin.length];
+            for (int i = 0; i < linesin.length; i++) {
+                int cc = 0;
+                if (linesin[i].contains("span id=")) {// && lines[i].contains("<td><a class=\"modal-link\" data-modal-width=\"895\" href=\"/profile/animal-detail/")) {
+                    proper2[cc] = linesin[i];
+                    System.out.println(proper2[cc++]);
+
+                    String dataName = proper2[cc].substring(25,28);
+                    //System.out.println(dataName);
+                    switch(dataName){
+                        case "jum":
+                            String[] dataName = proper2[cc].substring(32,35);
+                        break;
+                        case "num":
+
+                            break;
+                        case "sex":
+
+                            break;
+                        case "dob":
+
+                            break;
+                        case "nam":
+
+                            break;
+                        case "sta":
+
+                            break;
+                        case "bre":
+
+                            break;
+                        case "dam":
+
+                            break;
+                        case "sir":
+
+                            break;
+                        default:
+                            System.out.println("you fucked up!  :" +dataName);
+                            break;
+
+                    }
+                            cc++;
+                }
+
+
+
+            }
+
+        }
+//        for (int i = 0; i <proper2.length; i++) {
+//            System.out.println(proper2[i]);
+//        }
 
         //String login2 = profile.toString();
         //String[] lines2 = login2.split("\n");
         //String[] cowcodes2 = new String[lines2.length];
-       // String[] cowcodesonly2 = new String[1000];
-       // for (int i = 0; i < cowcodes2.length; i++) {
-       //     cowcodes2[i] = "";
+        // String[] cowcodesonly2 = new String[1000];
+        // for (int i = 0; i < cowcodes2.length; i++) {
+        //     cowcodes2[i] = "";
 
        //     System.out.print(cowcodes2[i]);
        // }
