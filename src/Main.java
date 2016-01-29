@@ -15,7 +15,7 @@ public class Main {
     private static String[] breed;
     private static String[] dam;
     private static String[] sire;
-
+    private static String[] sire2;private static String[] sire3;
     public static void main(String[] args) throws Exception {
 
         Connection.Response res = Jsoup                                 //connect to ICBF
