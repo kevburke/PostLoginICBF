@@ -1,14 +1,15 @@
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
     //arrays to store all animals details
+    private static String newId = "";
     private static String[] jumbo;
     private static String[] num;
     private static String[] sex;
@@ -21,8 +22,8 @@ public class Main {
     private static String[] replacement;
     private static String[] replacement_maternal;
     private static String[] terminal;
-    private static String[] diary;
-    private static String newId = "";
+    private static String[] replacement_maternal_prog;
+    private static String[] dairy;
 
     public static void main(String[] args) throws Exception {
 
@@ -44,7 +45,6 @@ public class Main {
         String login = mainin.toString();                   //doc to strings
         String[] lines = login.split("\n");                 //splitting to lines
 
-
         int x = 0;
         // String[] words = new String[lines.length];
         ArrayList  Add = new ArrayList();
@@ -58,10 +58,8 @@ public class Main {
 
                 Add.add(findNum[0]);                //stick id's into arrayliist
                 // System.out.println(Add);
-
             }
         }
-
         //set size of arrays
         jumbo = new String[Add.size()];
         num = new String[Add.size()];
@@ -74,10 +72,13 @@ public class Main {
         sire = new String[Add.size()];
         replacement = new String[Add.size()];
         replacement_maternal = new String[Add.size()];
+        dairy = new String[Add.size()];
         terminal = new String[Add.size()];
-        diary = new String[Add.size()];
+        replacement_maternal_prog = new String[Add.size()];
+
+
         int ju=0,nu=0, se=0, domm=0, nam=0, sta=0, bre=0, da=0, sir=0;
-        for (int xx = 0; xx < Add.size(); xx++) {
+        for (int xx = 0; xx <2;xx++){//Add.size(); xx++) {
 
             newId = (String) Add.get(xx);     //take id out and make connection to individual profiles
             //System.out.print(newId);
@@ -170,106 +171,36 @@ public class Main {
                     .get();
             // System.out.print("after socket");
             //System.out.print(euroStarConnect);
+            List<String> b = new ArrayList<String>();
             String profile2 = euroStarConnect.toString();                     //doc to strings
             String[] linesin2 = profile2.split("\n");                         //split on newline
-            String[] proper3 = new String[linesin2.length];
-            String[] val1 = new String[20];
-            String[] val2 = new String[20];
-            String [] val3 = new String[20];
-            int cc = 0;
-            int bb =0;
             String []one_three = new String[10];
             for (int j = 0; j <linesin2.length ; j++) {
-                int dd = 0;
 
                 if (linesin2[j].contains("<td>€")) {
 
-                    proper3[dd] = linesin2[j];           //all lines with key into proper3
                     String par = linesin2[j];
                     int ll =0;
-//                    System.out.println(par);
-
-//                    System.out.print(one_three[0]);
-//                    par=one_three.toString();
-//                    par= new StringBuilder(par).reverse().toString();
-//                    System.out.print(""+par);
-
                     Pattern pattern = Pattern.compile("€(.*?)<");
                     Matcher matcher = pattern.matcher(par);
                     while (matcher.find()) {
-                        one_three[ll] = matcher.group(1);
+                        replacement[xx] = matcher.group(1).toString();
                         ll++;
-                        //System.out.println(matcher.group(1));
+                        b.add(matcher.group(1));
+                        System.out.println(matcher.group(1));
                     }
-                     for(int u =0;u<ll;u++)
-                     System.out.println(one_three[u]);
-
-                    //String[] value = proper3[0].split("€");//split proper3 on € put into value
-//                    String[] value2 = proper3[0].split("</small></td>");//split proper3 on € put into value
-//                    String [] fvalue = value[1].split("<");//split on < put into fvalue left with all numbers
-//                    String [] fvalue2 = value2[0].split("</small> <small>");//split on < put into fvalue left with all numbers
-//                    String [] fvalue3 = fvalue2[0].split("l>€");//split on < put into fvalue left with all numbers
-                    //String a = fvalue2[1];
-                   // String [] fvalue3 = a.split("</small> ");//split on < put into fvalue left with all numbers
-                   // for(int u =0;u<=1;u++)
-                  // System.out.println(value[u]);
-//                System.out.println(value[1]);
-//                   System.out.println(value2[0]);
-////
-//                    System.out.println(fvalue[0]);
-//                   System.out.println(fvalue2[0]);
-//                    System.out.println(fvalue3[0]);
-//                    val1[cc] = fvalue[0];                //but numbers into
-
-                   // String [] value2 = proper3[1].split("€");
-                   // String[] ffvalue = value2[1].split("<");
-                   // val2[cc] = fvalue2[0];
-                   // val3[cc] = fvalue3[0];
-                    cc++;
-                 //  for (int jj = 0; jj <fvalue.length ; jj++) {
-                  //    System.out.println(jj+ fvalue[jj]);
-                  //  }
-                    //val1[] = fvalue[0];
-                    //System.out.println(val1);
                 }
+               // else if(linesin2[j].contains())
             }
-            replacement[xx] =val1[0];
-            replacement_maternal[xx] = val2[0];
+            replacement[xx] =b.get(0);
+            replacement_maternal[xx] =b.get(1);
+            replacement_maternal_prog[xx] =b.get(2);
+            terminal[xx]=b.get(3);
+            dairy[xx]= b.get(4);
 
-            //System.out.print(val1[xx]);
-            //**System.out.print(replacement[xx]);
-           // System.out.println(replacement_maternal[xx]);
-            //cc=0;
+
         }
     }
-
-
-//        for (int i = 0; i <proper2.length; i++) {
-//            System.out.println(proper2[i]);
-//        }
-
-    //String login2 = profile.toString();
-    //String[] lines2 = login2.split("\n");
-    //String[] cowcodes2 = new String[lines2.length];
-    // String[] cowcodesonly2 = new String[1000];
-    // for (int i = 0; i < cowcodes2.length; i++) {
-    //     cowcodes2[i] = "";
-
-    //     System.out.print(cowcodes2[i]);
-    // }
-
-           /* Arrays.sort(cowcodes);
-            for (int j = 0; j < cowcodes.length; j++) {
-                System.out.println(cowcodes[j]);
-            }*/
-        /*for (int i = 3; i < cowcodes.length; i++) {
-            Document cow = Jsoup.connect("http://webapp.icbf.com/profile/animal-detail/"+ cowcodes[i]+"/")
-                    .cookies(loginCookies)
-                    .get();
-            System.out.println(cow);
-        }*/
-
-
 }
 
 
