@@ -24,6 +24,8 @@ public class Main {
     private static String[] terminal;
     private static String[] replacement_maternal_prog;
     private static String[] dairy;
+    private static String[] calving_diff;
+    private  static String[] trait_reliability;
 
     public static void main(String[] args) throws Exception {
 
@@ -75,8 +77,8 @@ public class Main {
         dairy = new String[Add.size()];
         terminal = new String[Add.size()];
         replacement_maternal_prog = new String[Add.size()];
-
-
+        calving_diff = new String[Add.size()];
+        trait_reliability = new String[Add.size()];
         int ju=0,nu=0, se=0, domm=0, nam=0, sta=0, bre=0, da=0, sir=0;
         for (int xx = 0; xx <2;xx++){//Add.size(); xx++) {
 
@@ -171,34 +173,61 @@ public class Main {
                     .get();
             // System.out.print("after socket");
             //System.out.print(euroStarConnect);
-            List<String> b = new ArrayList<String>();
+            List<String> b = new ArrayList<String>();                               //create arraylist
             String profile2 = euroStarConnect.toString();                     //doc to strings
             String[] linesin2 = profile2.split("\n");                         //split on newline
+            String[] diff =  new String[5];
+            String[] diff3 = new String[5];
+            String [] percent1 = new String[5];
+            String[] percent3 = new String[5];
+
+            String diff2 = "";
+            String calv="";
+            String percent= "";
+            String percent2 = "";
             String []one_three = new String[10];
             for (int j = 0; j <linesin2.length ; j++) {
 
-                if (linesin2[j].contains("<td>€")) {
+                if (linesin2[j].contains("<td>€")) {                        //lines that include the € sign
 
                     String par = linesin2[j];
                     int ll =0;
-                    Pattern pattern = Pattern.compile("€(.*?)<");
-                    Matcher matcher = pattern.matcher(par);
+                    Pattern pattern = Pattern.compile("€(.*?)<");           //search patterns that gets value after €
+                    Matcher matcher = pattern.matcher(par);                 //before <
                     while (matcher.find()) {
-                        replacement[xx] = matcher.group(1).toString();
+                       // replacement[xx] = matcher.group(1).toString();
                         ll++;
                         b.add(matcher.group(1));
-                        System.out.println(matcher.group(1));
+                      //  System.out.println(matcher.group(1));
                     }
                 }
-               // else if(linesin2[j].contains())
+                calv = linesin2[63];                     //searching calving
+                diff = calv.split("<td>");
+                diff2 = diff[1];
+                diff3 = diff2.split("</");
+                percent = linesin2[64];
+                percent1 = percent.split("<td>");
+                percent2 = percent1[1];
+                percent3 = percent2.split("<s");
+
+                //Pattern newCalv = Pattern.compile("<td>(.*?)<");
+                //Matcher matcher = newCalv.matcher(calv);
+
             }
+            trait_reliability[xx] = percent3[0];
+            calving_diff[xx] = diff3[0];
             replacement[xx] =b.get(0);
             replacement_maternal[xx] =b.get(1);
             replacement_maternal_prog[xx] =b.get(2);
             terminal[xx]=b.get(3);
             dairy[xx]= b.get(4);
-
-
+            System.out.println("rep " +  replacement[xx]);
+            System.out.println("rep_mater " +replacement_maternal[xx]);
+            System.out.println("rep_mater_prog " + replacement_maternal_prog[xx]);
+            System.out.println("terminal "+terminal[xx]);
+            System.out.println("dairy " + dairy[xx]);
+            System.out.println("cal " + calving_diff[xx]);
+            System.out.println("trait_rel " + trait_reliability[xx]);
         }
     }
 }
