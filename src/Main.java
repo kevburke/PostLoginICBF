@@ -25,8 +25,8 @@ public class Main {
     private static String[] replacement_maternal_prog;
     private static String[] dairy;
     private static String[] calving_diff;
-    private  static String[] trait_reliability;
-
+    private static String[] trait_reliability;
+   // private static String[]
     public static void main(String[] args) throws Exception {
 
         Connection.Response res = Jsoup                                 //connect to ICBF
@@ -79,6 +79,7 @@ public class Main {
         replacement_maternal_prog = new String[Add.size()];
         calving_diff = new String[Add.size()];
         trait_reliability = new String[Add.size()];
+
         int ju=0,nu=0, se=0, domm=0, nam=0, sta=0, bre=0, da=0, sir=0;
         for (int xx = 0; xx <2;xx++){//Add.size(); xx++) {
 
@@ -212,7 +213,12 @@ public class Main {
 
                 //Pattern newCalv = Pattern.compile("<td>(.*?)<");
                 //Matcher matcher = newCalv.matcher(calv);
+                if(linesin2[j].contains("Calving difficulty")){
+                    String nLine =linesin2[j++];
+                   String [] aLine = nLine.split("<td>");
 
+
+                }
             }
             trait_reliability[xx] = percent3[0];
             calving_diff[xx] = diff3[0];
@@ -228,6 +234,7 @@ public class Main {
             System.out.println("dairy " + dairy[xx]);
             System.out.println("cal " + calving_diff[xx]);
             System.out.println("trait_rel " + trait_reliability[xx]);
+
         }
     }
 }
