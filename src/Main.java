@@ -26,6 +26,12 @@ public class Main {
     private static String[] dairy;
     private static String[] calving_diff;
     private static String[] trait_reliability;
+    private static String[] replaceStar;
+    private static String[] termStar;
+    private static String[] dairyStar;
+    private static String[] docileStar;
+    private static String[] carcassWeighStar;
+    private static String[] carcassConformStar;
    // private static String[]
     public static void main(String[] args) throws Exception {
 
@@ -79,6 +85,12 @@ public class Main {
         replacement_maternal_prog = new String[Add.size()];
         calving_diff = new String[Add.size()];
         trait_reliability = new String[Add.size()];
+        replaceStar = new String[Add.size()];
+        termStar = new String[Add.size()];
+        dairyStar = new String[Add.size()];
+        docileStar = new String[Add.size()];
+        carcassWeighStar = new String[Add.size()];
+        carcassConformStar = new String[Add.size()];
 
         int ju=0,nu=0, se=0, domm=0, nam=0, sta=0, bre=0, da=0, sir=0;
         for (int xx = 0; xx <2;xx++){//Add.size(); xx++) {
@@ -177,6 +189,7 @@ public class Main {
             List<String> b = new ArrayList<String>();                               //create arraylist
             String profile2 = euroStarConnect.toString();                     //doc to strings
             String[] linesin2 = profile2.split("\n");                         //split on newline
+            String[] linesin3 = profile2.split("\n");
             String[] diff =  new String[5];
             String[] diff3 = new String[5];
             String [] percent1 = new String[5];
@@ -201,6 +214,50 @@ public class Main {
                         b.add(matcher.group(1));
                       //  System.out.println(matcher.group(1));
                     }
+                }
+
+                String prepare ="";
+                String[] prepare2;
+                String[] prepare3;
+                String stars;
+
+                try {
+                    if (linesin2[j].contains(" data-rating")) {
+                        prepare = linesin2[j];
+                        prepare2 = prepare.split("data-rating=\"");
+                        prepare3 = prepare2[1].split("\"");
+                        stars = prepare3[0];
+                        int ee=0;
+                       // System.out.println("*******" + stars);
+                        switch (ee){
+
+                            case 1:
+                                replaceStar[xx] = stars;
+                                break;
+                            case 3:
+                                termStar[xx]=stars;
+                                break;
+                            case 5:
+                                dairyStar[xx]=stars;
+                                break;
+                            case 7:
+                                docileStar[xx]=stars;
+                                break;
+                            case 9:
+                                carcassWeighStar[xx]=stars;
+                                break;
+                            case 11:
+                                carcassConformStar[xx]=stars;
+                                break;
+                            default:
+                                break;
+
+                        }
+
+
+                    }
+                }catch(ArrayIndexOutOfBoundsException e){
+                    System.out.println(e);
                 }
                 calv = linesin2[63];                     //searching calving
                 diff = calv.split("<td>");
