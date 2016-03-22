@@ -32,7 +32,24 @@ public class Main {
     private static String[] docileStar;
     private static String[] carcassWeighStar;
     private static String[] carcassConformStar;
-   // private static String[]
+    private static String[] daughterMilkStar;
+    private static String[] daughterCalvIntStar;
+    private static String[] replacement_index;
+    private static String[] docility_index;
+    private static String[] docility_reliability;
+    private static String[] carcassWeiIndx;
+    private static String[] carcassWeightRel;
+    private static String[] daughter_Calving_Diff;
+    private static String[] daughter_Milk_index;
+    private static String[] daughter_milk_rel;
+    private static String[] carcass_conform_index;
+    private static String[] carcass_conform_rel;
+    private static String[] daughter_calving_rel;
+    private static String[] daughter_calv_int;
+    private static String[] daughter_calv_int_rel;
+
+
+    // private static String[]
     public static void main(String[] args) throws Exception {
 
         Connection.Response res = Jsoup                                 //connect to ICBF
@@ -83,6 +100,7 @@ public class Main {
         dairy = new String[Add.size()];
         terminal = new String[Add.size()];
         replacement_maternal_prog = new String[Add.size()];
+        replacement_index = new String[Add.size()];
         calving_diff = new String[Add.size()];
         trait_reliability = new String[Add.size()];
         replaceStar = new String[Add.size()];
@@ -90,7 +108,21 @@ public class Main {
         dairyStar = new String[Add.size()];
         docileStar = new String[Add.size()];
         carcassWeighStar = new String[Add.size()];
+        carcassWeiIndx = new String[Add.size()];
+        carcassWeightRel = new String[Add.size()];
         carcassConformStar = new String[Add.size()];
+        daughterMilkStar = new String[Add.size()];
+        daughterCalvIntStar = new String[Add.size()];
+        docility_index = new String[Add.size()];
+        docility_reliability = new String[Add.size()];
+        daughter_Calving_Diff = new String[Add.size()];
+        daughter_calving_rel = new String[Add.size()];
+        daughter_Milk_index = new String[Add.size()];
+        carcass_conform_index = new String[Add.size()];
+        carcass_conform_rel = new String[Add.size()];
+        daughter_milk_rel = new String[Add.size()];
+        daughter_calv_int = new String[Add.size()];
+        daughter_calv_int_rel = new String[Add.size()];
 
         int ju=0,nu=0, se=0, domm=0, nam=0, sta=0, bre=0, da=0, sir=0;
         for (int xx = 0; xx <2;xx++){//Add.size(); xx++) {
@@ -189,7 +221,7 @@ public class Main {
             List<String> b = new ArrayList<String>();                               //create arraylist
             String profile2 = euroStarConnect.toString();                     //doc to strings
             String[] linesin2 = profile2.split("\n");                         //split on newline
-            String[] linesin3 = profile2.split("\n");
+
             String[] diff =  new String[5];
             String[] diff3 = new String[5];
             String [] percent1 = new String[5];
@@ -199,7 +231,12 @@ public class Main {
             String calv="";
             String percent= "";
             String percent2 = "";
+            String repInd ="";
+            String docile ="";
+            String scale ="";
+            String docPercent = "";
             String []one_three = new String[10];
+            int ee=0;
             for (int j = 0; j <linesin2.length ; j++) {
 
                 if (linesin2[j].contains("<td>€")) {                        //lines that include the € sign
@@ -221,18 +258,20 @@ public class Main {
                 String[] prepare3;
                 String stars;
 
+
                 try {
                     if (linesin2[j].contains(" data-rating")) {
                         prepare = linesin2[j];
                         prepare2 = prepare.split("data-rating=\"");
                         prepare3 = prepare2[1].split("\"");
                         stars = prepare3[0];
-                        int ee=0;
-                       // System.out.println("*******" + stars);
+
+                        //System.out.println("*******" + stars);
                         switch (ee){
 
                             case 1:
                                 replaceStar[xx] = stars;
+                               // System.out.println("*******" + stars);
                                 break;
                             case 3:
                                 termStar[xx]=stars;
@@ -249,41 +288,220 @@ public class Main {
                             case 11:
                                 carcassConformStar[xx]=stars;
                                 break;
+                            case 13:
+                                daughterMilkStar[xx]=stars;
+                                break;
+                            case 15:
+                                daughterCalvIntStar[xx]=stars;
+                                break;
                             default:
                                 break;
-
                         }
-
-
+                        ee++;
                     }
                 }catch(ArrayIndexOutOfBoundsException e){
                     System.out.println(e);
                 }
+                /**
+                 * Parsing Calving difficulty
+                 */
                 calv = linesin2[63];                     //searching calving
                 diff = calv.split("<td>");
                 diff2 = diff[1];
-                diff3 = diff2.split("</");
+                diff3 = diff2.split("</");                                  //done
                 percent = linesin2[64];
                 percent1 = percent.split("<td>");
                 percent2 = percent1[1];
-                percent3 = percent2.split("<s");
+                percent3 = percent2.split("<s");                            //done
+
 
                 //Pattern newCalv = Pattern.compile("<td>(.*?)<");
                 //Matcher matcher = newCalv.matcher(calv);
-                if(linesin2[j].contains("Calving difficulty")){
-                    String nLine =linesin2[j++];
-                   String [] aLine = nLine.split("<td>");
-
-
-                }
+               // if(linesin2[j].contains("Calving difficulty")){
+                 //   String nLine =linesin2[j++];
+                 //  String [] aLine = nLine.split("<td>");
+               // }
             }
-            trait_reliability[xx] = percent3[0];
-            calving_diff[xx] = diff3[0];
-            replacement[xx] =b.get(0);
+            /**
+             *Parsing Replacement Index reliability
+             */
+            String[] repInd2;
+            String repInd3;
+            String[] repInd4;
+            repInd = linesin2[21];
+            repInd2 = repInd.split("<td>");
+            repInd3 = repInd2[1];
+            repInd4 = repInd3.split(" \\(");                            //done
+
+            /**
+             * Docility index value and trait reliability
+             */
+            String doc;
+            String [] doc1;
+            String doc2;
+            String[] doc3;
+            String docrel;
+            String [] docrel1;
+            String docrel2;
+            String[] docrel3;
+            doc = linesin2[71];
+            doc1 = doc.split("<td>");
+            doc2 = doc1[1];
+            doc3 = doc2.split("<");
+          //  System.out.println(doc3[0]);                              //done
+            docrel = linesin2[72];
+            docrel1 = docrel.split("<td>");
+            docrel2 = docrel1[1];
+            docrel3 = docrel2.split("%");
+           // System.out.println(docrel3[0]);                           //done
+
+            /**
+             * Carcass weight index and reliability
+             */
+            String car;
+            String[] car1;
+            String car2;
+            String[] car3;
+            car = linesin2[80];
+            car1 = car.split("<td>");
+            car2 = car1[1];
+            car3 = car2.split("kg");
+            //System.out.println(car3[0]);                              //done
+
+            String carRel;
+            String[] carRel1;
+            String carRel2;
+            String[] carRel3;
+            carRel = linesin2[81];
+            carRel1 = carRel.split("<td>");
+            carRel2 = carRel1[1];
+            carRel3 = carRel2.split("%");                               //done
+           // System.out.println("carcass reliability " +carRel3[0]);
+
+            /**
+             * Carcass conformation index & reliability
+             */
+            String carcass;
+            String[] carcass1;
+            String carcass2;
+            String[] carcass3;
+
+            String carcassRel;
+            String[] carcassRel1;
+            String carcassRel2;
+            String[] carcassRel3;
+
+            carcass = linesin2[89];
+            carcass1 = carcass.split("<td>");
+            carcass2 = carcass1[1];
+            carcass3 = carcass2.split("<");
+            //System.out.println(carcass3[0]);                            //done
+
+            carcassRel = linesin2[90];
+            carcassRel1 = carcassRel.split("<td>");
+            carcassRel2 = carcassRel1[1];
+            carcassRel3 = carcassRel2.split("%");
+            //System.out.println(carcassRel3[0]);                         //done
+
+            /**
+             * Daughter calving difficulty
+             */
+            String daughterCalv;
+            String[] daughterCalv1;
+            String daughterCalv2;
+            String[] daughterCalv3;
+
+            String dCalvRel;
+            String[] dCalvRel1;
+            String dCalvRel2;
+            String[] dCalvRel3;
+
+            daughterCalv = linesin2[100];
+            daughterCalv1 = daughterCalv.split("<td>");
+            daughterCalv2 = daughterCalv1[1];
+            daughterCalv3 = daughterCalv2.split("%");
+            //System.out.println(daughterCalv3[0]);                     //done
+
+            dCalvRel = linesin2[101];
+            dCalvRel1 =dCalvRel.split("<td>");
+            dCalvRel2 = dCalvRel1[1];
+            dCalvRel3 = dCalvRel2.split("%");
+           // System.out.println(dCalvRel3[0]);                         //done
+
+            /**
+             * Daughter Milk index and reliability
+             */
+
+            String daughterMilk;
+            String[] daughterMilk1;
+            String daughterMilk2;
+            String[] daughterMilk3;
+
+            String dMilkRel;
+            String[] dMilkRel1;
+            String dMilkRel2;
+            String[] dMilkRel3;
+
+            daughterMilk = linesin2[108];
+            daughterMilk1 = daughterMilk.split("<td>");
+            daughterMilk2 = daughterMilk1[1];
+            daughterMilk3 = daughterMilk2.split("kg");
+           // System.out.println(daughterMilk3[0]);                     //done
+
+            dMilkRel = linesin2[109];
+            dMilkRel1 = dMilkRel.split("<td>");
+            dMilkRel2 = dMilkRel1[1];
+            dMilkRel3 = dMilkRel2.split("%");
+            //System.out.println(dMilkRel3[0]);                         //done
+
+            /**
+             * Daughter calving interval
+             */
+
+            String dCalvInt;
+            String[] dCalvInt1;
+            String dCalvInt2;
+            String[] dCalvInt3;
+
+            String dCalvIntRel;
+            String[] dCalvIntRel1;
+            String dCalvIntRel2;
+            String[] dCalvIntRel3;
+
+            dCalvInt = linesin2[117];
+            dCalvInt1 = dCalvInt.split("<td>");
+            dCalvInt2 = dCalvInt1[1];
+            dCalvInt3 = dCalvInt2.split("days");
+            //System.out.println(dCalvInt3[0]);                     //done
+
+            dCalvIntRel = linesin2[118];
+            dCalvIntRel1 = dCalvIntRel.split("<td>");
+            dCalvIntRel2 = dCalvIntRel1[1];
+            dCalvIntRel3 = dCalvIntRel2.split("%");
+            System.out.println(dCalvIntRel3[0]);                    //done
+
+            trait_reliability[xx] = percent3[0];                //calving difficulty trait reliability
+            calving_diff[xx] = diff3[0];                        //calving difficulty
+            replacement[xx] =b.get(0);                          //
             replacement_maternal[xx] =b.get(1);
             replacement_maternal_prog[xx] =b.get(2);
+            replacement_index[xx] = repInd4[0];                 //replacement index
             terminal[xx]=b.get(3);
             dairy[xx]= b.get(4);
+            docility_index[xx] = doc3[0];                       //docility index
+            docility_reliability[xx] = docrel3[0];              //docility reliability
+            carcassWeiIndx[xx] = car3[0];                       //Carcass weight index
+            carcassWeightRel[xx] =  carRel3[0];                 //Carcass weight reliability
+            daughter_Milk_index[xx] = daughterMilk3[0];         //daughter milk index
+            daughter_milk_rel[xx] = dMilkRel3[0];               //daughter milk reliability
+            daughter_Calving_Diff[xx] = daughterCalv3[0];       //daughter calving difficulty
+            daughter_calving_rel[xx] = dCalvRel3[0];            //daughter calving reliability
+            carcass_conform_index[xx] = carcass3[0];            //Carcass conformation index
+            carcass_conform_rel[xx] = carcassRel3[0];           //Carcass conformation reliability
+            daughter_calv_int[xx] = dCalvInt3[0];               //daughter calving interval
+            daughter_calv_int_rel[xx] = dCalvIntRel3[0];        //daughter calving interval reliability
+
+
             System.out.println("rep " +  replacement[xx]);
             System.out.println("rep_mater " +replacement_maternal[xx]);
             System.out.println("rep_mater_prog " + replacement_maternal_prog[xx]);
@@ -291,6 +509,23 @@ public class Main {
             System.out.println("dairy " + dairy[xx]);
             System.out.println("cal " + calving_diff[xx]);
             System.out.println("trait_rel " + trait_reliability[xx]);
+            System.out.println("replace_star " + replaceStar[xx]);
+            System.out.println("terminal_star " + termStar[xx]);
+            System.out.println("dairy_star " + dairyStar[xx]);
+            System.out.println("docile_star " + docileStar[xx]);
+            System.out.println("docile_index " + docility_index[xx]);
+            System.out.println("carcass_weight_star " + carcassWeighStar[xx]);
+            System.out.println("carcass_conformation_star " + carcassConformStar[xx]);
+            System.out.println("daughter_milk_star "+ daughterMilkStar[xx]);
+            System.out.println("daughter_calv_int_star " + daughterCalvIntStar[xx]);
+            System.out.println("daughter_calving_difficulty"+ daughter_Calving_Diff[xx]);
+            System.out.println("daughter_calving_difficulty_Reliability"+  daughter_calving_rel[xx]);
+            System.out.println("daughter_milk_index"+ daughter_Milk_index[xx]);
+            System.out.println("daughter_milk_reliability"+  daughter_milk_rel[xx]);
+            System.out.println("carcass_conform_index "+ carcass_conform_index[xx]);
+            System.out.println("carcass_conform_reliability "+ carcass_conform_rel[xx]);
+            System.out.println("daughter_calving_interval "+  daughter_calv_int[xx]);
+            System.out.println("daughter_calving_interval_reliability "+ daughter_calv_int_rel[xx]);
 
         }
     }
